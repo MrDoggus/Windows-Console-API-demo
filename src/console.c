@@ -54,12 +54,14 @@ console_info_t* setup_console()
 
     CONSOLE_SCREEN_BUFFER_INFO buffinfo;
     BOOL retval = GetConsoleScreenBufferInfo(cinfo->outHandle, &buffinfo);
-    if (!retval) return NULL;
-    
-    cinfo->c_height = buffinfo.dwSize.Y;
-    cinfo->c_width = buffinfo.dwSize.X;
-
-    
+    if (retval) {
+        cinfo->c_height = buffinfo.dwSize.Y;
+        cinfo->c_width = buffinfo.dwSize.X;
+    }
+    else {
+        cinfo->c_height = 0;
+        cinfo->c_width = 0;
+    }    
 
     return cinfo;
 }
@@ -158,14 +160,21 @@ console_error_t window_event(console_info_t* cinfo, PWINDOW_BUFFER_SIZE_RECORD r
 
 console_error_t clear_display(console_info_t* cinfo)
 {
-    WriteConsoleA(cinfo->outHandle, "\x1b[2J\x1b[H", 8, NULL, NULL);
+    BOOL wconsuccess; 
+    wconsuccess = WriteConsoleA(cinfo->outHandle, "\x1b[2J\x1b[H", 8, NULL, NULL);
 
-    return CONSOLE_SUCCESS;
+    if (wconsucces) {
+        return CONSOLE_SUCCESS;
+    }
+    else {
+        return CONSOLE_ERR_GENERIC;
+    }
 }
 
 console_error_t clear_line(console_info_t* cinfo)
 {
-    WriteConsoleA(cinfo->outHandle, "\x1b[2K\x1b[G", 8, NULL, NULL);
+    BOOL wconsuccess; 
+    wconsuccess = WriteConsoleA(cinfo->outHandle, "\x1b[2K\x1b[G", 8, NULL, NULL);
 
     return CONSOLE_SUCCESS;
 }
@@ -174,47 +183,75 @@ console_error_t set_cursor_pos(console_info_t* cinfo, short x, short y)
 {
     const int STR_BUFFLEN = 20;
     char strbuff[STR_BUFFLEN];
+    BOOL wconsuccess;
 
     snprintf(strbuff, STR_BUFFLEN, "\x1b[%d;%dH", y, x);
-    WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
+    wconsuccess = WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
 
-    return CONSOLE_SUCCESS;
+    if (wconsucces) {
+        return CONSOLE_SUCCESS;
+    }
+    else {
+        return CONSOLE_ERR_GENERIC;
+    }
 }
 
 console_error_t hide_cursor(console_info_t* cinfo)
 {
-    WriteConsoleA(cinfo->outHandle, "\x1b[?25l", 7 , NULL, NULL);
+    BOOL wconsuccess; 
+    wconsuccess = WriteConsoleA(cinfo->outHandle, "\x1b[?25l", 7 , NULL, NULL);
 
-    return CONSOLE_SUCCESS;
+    if (wconsucces) {
+        return CONSOLE_SUCCESS;
+    }
+    else {
+        return CONSOLE_ERR_GENERIC;
+    }
 }
 
 console_error_t show_cursor(console_info_t* cinfo)
 {
-    WriteConsoleA(cinfo->outHandle, "\x1b[?25h", 7 , NULL, NULL);
+    BOOL wconsuccess; 
+    wconsuccess = WriteConsoleA(cinfo->outHandle, "\x1b[?25h", 7 , NULL, NULL);
 
-    return CONSOLE_SUCCESS;
+    if (wconsucces) {
+        return CONSOLE_SUCCESS;
+    }
+    else {
+        return CONSOLE_ERR_GENERIC;
+    }
 }
 
 console_error_t set_foreground_color(console_info_t* cinfo, console_color_t color)
 {
     const int STR_BUFFLEN = 16;
     char strbuff[STR_BUFFLEN];
+    BOOL wconsuccess; 
 
     snprintf(strbuff, STR_BUFFLEN, "\x1b[38;5;%dm", COLOR_MAP[color]);
+    wconsuccess = WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
 
-    WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
-
-    return CONSOLE_SUCCESS;
+    if (wconsucces) {
+        return CONSOLE_SUCCESS;
+    }
+    else {
+        return CONSOLE_ERR_GENERIC;
+    }
 }
 
 console_error_t set_background_color(console_info_t* cinfo, console_color_t color)
 {
     const int STR_BUFFLEN = 16;
     char strbuff[STR_BUFFLEN];
+    BOOL wconsuccess; 
 
     snprintf(strbuff, STR_BUFFLEN, "\x1b[48;5;%dm", COLOR_MAP[color]);
+    wconsuccess = WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
 
-    WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
-
-    return CONSOLE_SUCCESS;
+    if (wconsucces) {
+        return CONSOLE_SUCCESS;
+    }
+    else {
+        return CONSOLE_ERR_GENERIC;
+    }
 }

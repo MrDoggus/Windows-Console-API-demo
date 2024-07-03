@@ -52,28 +52,65 @@ typedef struct console_info {
 
 } console_info_t;
 
+/// @brief Allocates and initializes a console_info struct
+/// @return Allocated console_info struct
 console_info_t* setup_console();
 
+/// @brief Handles events from the console input buffer 
+/// @param cinfo Console info struct
+/// @param blocking True if should wait for a input to handle
+/// @return Error code
 console_error_t handle_events(console_info_t* cinfo, char blocking);
 
+/// @brief Basic handling of a focus event
+/// @param cinfo Console info struct
+/// @param focus_event focus event record
+/// @return Error code
 console_error_t focus_event(console_info_t* cinfo, PFOCUS_EVENT_RECORD focus_event);
 
+/// @brief Basic handling of window buffer record
+/// @param cinfo Console info struct
+/// @param record window buffer size record
+/// @return Error code
 console_error_t window_event(console_info_t* cinfo, PWINDOW_BUFFER_SIZE_RECORD record);
 
-console_error_t fetch_consolestate(console_info_t* cinfo);
-
+/// @brief Clears all characters on the display
+/// @param cinfo Console info struct
+/// @return Error code
 console_error_t clear_display(console_info_t* cinfo);
 
+/// @brief Clears the line located at the cursor position
+/// @param cinfo Console info struct
+/// @return Error code
 console_error_t clear_line(console_info_t* cinfo);
 
+/// @brief Sets the position of the console cursor
+/// @param cinfo Console info struct
+/// @param x Horizontal position
+/// @param y Vertical position
+/// @return Error code
 console_error_t set_cursor_pos(console_info_t* cinfo, short x, short y);
 
+/// @brief Hides the cursor
+/// @param cinfo Console info struct
+/// @return Error code
 console_error_t hide_cursor(console_info_t* cinfo);
 
+/// @brief Shows the cursor
+/// @param cinfo Console info struct
+/// @return Error code
 console_error_t show_cursor(console_info_t* cinfo);
 
+/// @brief Sets the text color
+/// @param cinfo Console info struct
+/// @param color Specified color
+/// @return Error code
 console_error_t set_foreground_color(console_info_t* cinfo, console_color_t color);
 
+/// @brief Sets the text background color
+/// @param cinfo Console info struct
+/// @param color Specified color
+/// @return Error code
 console_error_t set_background_color(console_info_t* cinfo, console_color_t color);
 
 #endif
