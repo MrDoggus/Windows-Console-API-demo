@@ -163,7 +163,7 @@ console_error_t clear_display(console_info_t* cinfo)
     BOOL wconsuccess; 
     wconsuccess = WriteConsoleA(cinfo->outHandle, "\x1b[2J\x1b[H", 8, NULL, NULL);
 
-    if (wconsucces) {
+    if (wconsuccess) {
         return CONSOLE_SUCCESS;
     }
     else {
@@ -176,7 +176,12 @@ console_error_t clear_line(console_info_t* cinfo)
     BOOL wconsuccess; 
     wconsuccess = WriteConsoleA(cinfo->outHandle, "\x1b[2K\x1b[G", 8, NULL, NULL);
 
-    return CONSOLE_SUCCESS;
+    if (wconsuccess) {
+        return CONSOLE_SUCCESS;
+    }
+    else {
+        return CONSOLE_ERR_GENERIC;
+    }
 }
 
 console_error_t set_cursor_pos(console_info_t* cinfo, short x, short y)
@@ -188,7 +193,7 @@ console_error_t set_cursor_pos(console_info_t* cinfo, short x, short y)
     snprintf(strbuff, STR_BUFFLEN, "\x1b[%d;%dH", y, x);
     wconsuccess = WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
 
-    if (wconsucces) {
+    if (wconsuccess) {
         return CONSOLE_SUCCESS;
     }
     else {
@@ -201,7 +206,7 @@ console_error_t hide_cursor(console_info_t* cinfo)
     BOOL wconsuccess; 
     wconsuccess = WriteConsoleA(cinfo->outHandle, "\x1b[?25l", 7 , NULL, NULL);
 
-    if (wconsucces) {
+    if (wconsuccess) {
         return CONSOLE_SUCCESS;
     }
     else {
@@ -214,7 +219,7 @@ console_error_t show_cursor(console_info_t* cinfo)
     BOOL wconsuccess; 
     wconsuccess = WriteConsoleA(cinfo->outHandle, "\x1b[?25h", 7 , NULL, NULL);
 
-    if (wconsucces) {
+    if (wconsuccess) {
         return CONSOLE_SUCCESS;
     }
     else {
@@ -231,7 +236,7 @@ console_error_t set_foreground_color(console_info_t* cinfo, console_color_t colo
     snprintf(strbuff, STR_BUFFLEN, "\x1b[38;5;%dm", COLOR_MAP[color]);
     wconsuccess = WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
 
-    if (wconsucces) {
+    if (wconsuccess) {
         return CONSOLE_SUCCESS;
     }
     else {
@@ -248,7 +253,7 @@ console_error_t set_background_color(console_info_t* cinfo, console_color_t colo
     snprintf(strbuff, STR_BUFFLEN, "\x1b[48;5;%dm", COLOR_MAP[color]);
     wconsuccess = WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
 
-    if (wconsucces) {
+    if (wconsuccess) {
         return CONSOLE_SUCCESS;
     }
     else {
