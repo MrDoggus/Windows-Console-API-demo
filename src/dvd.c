@@ -92,7 +92,6 @@ int main() {
             x = cinfo->c_width-PSTR_len+1 + x_vel;
 
             z = rand()%7 + 1;
-            clear_display(cinfo);
         }
 
         // Check if hit top or bottom edge
@@ -108,7 +107,6 @@ int main() {
             y = cinfo->c_height-1 + y_vel;
 
             z = rand()%7 + 1;
-            clear_display(cinfo);
         }
 
         clear_line(cinfo);

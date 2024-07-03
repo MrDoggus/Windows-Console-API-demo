@@ -152,6 +152,8 @@ console_error_t focus_event(console_info_t* cinfo, PFOCUS_EVENT_RECORD focus_eve
 
 console_error_t window_event(console_info_t* cinfo, PWINDOW_BUFFER_SIZE_RECORD record)
 {
+    clear_display(cinfo);
+
     cinfo->c_width = record->dwSize.X;
     cinfo->c_height = record->dwSize.Y;
 
