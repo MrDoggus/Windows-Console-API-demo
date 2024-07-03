@@ -24,22 +24,21 @@ int main() {
     retval = SetConsoleMode(cinfo->outHandle, ENABLE_PROCESSED_OUTPUT | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
     if (!retval) return 2;
 
-    const int STR_BUFFLEN = 64;
-    char strbuff[STR_BUFFLEN];
+    // const int STR_BUFFLEN = 64;
+    // char strbuff[STR_BUFFLEN];
 
     // set CTRL handler
     SetConsoleCtrlHandler(&ctrlhandler, 1);
     
-    // Disable cursor
-    WriteConsoleA(cinfo->outHandle, "\x1b[?25l", 7 , NULL, NULL);
+    hide_cursor(cinfo);
 
     clear_display(cinfo);
-
     
 
     // --- Check for text to display from file --- //
     char fstrbuff[24];
     char* PSTR = fstrbuff;
+    int PSTR_len = 0;
 
     HANDLE dvdfileH;
     dvdfileH = CreateFileA(".\\dvd.txt", GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -54,6 +53,7 @@ int main() {
         }
     }
     CloseHandle(dvdfileH);
+    PSTR_len = strlen(PSTR);
 
     // --- Display text --- //
     int x = 1;
@@ -68,8 +68,11 @@ int main() {
 
         handle_events(cinfo, 0);
         
-        snprintf(strbuff, STR_BUFFLEN, "\x1b[%d;%dH\x1b[38;5;%dm%s", y, x, COLOR_MAP[z%8], PSTR);
-        WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
+        set_cursor_pos(cinfo, x, y);
+        set_foreground_color(cinfo, z%8);
+        WriteConsoleA(cinfo->outHandle, PSTR, PSTR_len, NULL, NULL);
+        // snprintf(strbuff, STR_BUFFLEN, "\x1b[%d;%dH\x1b[38;5;%dm%s", y, x, COLOR_MAP[z%8], PSTR);
+        // WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
         
         Sleep(200);
 
@@ -83,10 +86,10 @@ int main() {
 
             z = rand()%7 + 1;
         }
-        else if (x > cinfo->c_width-strlen(PSTR)+1)
+        else if (x > cinfo->c_width-PSTR_len+1)
         {
             x_vel = -x_vel;
-            x = cinfo->c_width-strlen(PSTR)+1 + x_vel;
+            x = cinfo->c_width-PSTR_len+1 + x_vel;
 
             z = rand()%7 + 1;
             clear_display(cinfo);
@@ -119,7 +122,7 @@ BOOL ctrlhandler(DWORD dwCT)
 {
     if (dwCT == CTRL_C_EVENT || dwCT == CTRL_BREAK_EVENT)
     {
-        WriteConsoleA(cinfo->outHandle, "\x1b[?25h", 7 , NULL, NULL);
+        show_cursor(cinfo);
         ExitProcess(0);
     }
     else 

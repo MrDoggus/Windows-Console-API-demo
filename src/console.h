@@ -66,4 +66,14 @@ console_error_t clear_display(console_info_t* cinfo);
 
 console_error_t clear_line(console_info_t* cinfo);
 
+console_error_t set_cursor_pos(console_info_t* cinfo, short x, short y);
+
+console_error_t hide_cursor(console_info_t* cinfo);
+
+console_error_t show_cursor(console_info_t* cinfo);
+
+console_error_t set_foreground_color(console_info_t* cinfo, console_color_t color);
+
+console_error_t set_background_color(console_info_t* cinfo, console_color_t color);
+
 #endif

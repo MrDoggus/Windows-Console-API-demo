@@ -170,3 +170,51 @@ console_error_t clear_line(console_info_t* cinfo)
     return CONSOLE_SUCCESS;
 }
 
+console_error_t set_cursor_pos(console_info_t* cinfo, short x, short y)
+{
+    const int STR_BUFFLEN = 20;
+    char strbuff[STR_BUFFLEN];
+
+    snprintf(strbuff, STR_BUFFLEN, "\x1b[%d;%dH", y, x);
+    WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
+
+    return CONSOLE_SUCCESS;
+}
+
+console_error_t hide_cursor(console_info_t* cinfo)
+{
+    WriteConsoleA(cinfo->outHandle, "\x1b[?25l", 7 , NULL, NULL);
+
+    return CONSOLE_SUCCESS;
+}
+
+console_error_t show_cursor(console_info_t* cinfo)
+{
+    WriteConsoleA(cinfo->outHandle, "\x1b[?25h", 7 , NULL, NULL);
+
+    return CONSOLE_SUCCESS;
+}
+
+console_error_t set_foreground_color(console_info_t* cinfo, console_color_t color)
+{
+    const int STR_BUFFLEN = 16;
+    char strbuff[STR_BUFFLEN];
+
+    snprintf(strbuff, STR_BUFFLEN, "\x1b[38;5;%dm", COLOR_MAP[color]);
+
+    WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
+
+    return CONSOLE_SUCCESS;
+}
+
+console_error_t set_background_color(console_info_t* cinfo, console_color_t color)
+{
+    const int STR_BUFFLEN = 16;
+    char strbuff[STR_BUFFLEN];
+
+    snprintf(strbuff, STR_BUFFLEN, "\x1b[48;5;%dm", COLOR_MAP[color]);
+
+    WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
+
+    return CONSOLE_SUCCESS;
+}
