@@ -36,7 +36,7 @@ int main() {
     
 
     // --- Check for text to display from file --- //
-    char fstrbuff[24];
+    char fstrbuff[64];
     char* PSTR = fstrbuff;
     int PSTR_len = 0;
 
@@ -48,7 +48,7 @@ int main() {
     }
     else 
     {
-        if (! ReadFile(dvdfileH, PSTR, 24, NULL, NULL)) {
+        if (! ReadFile(dvdfileH, PSTR, 64, NULL, NULL)) {
             PSTR = "Hello World!";
         }
     }
@@ -71,10 +71,8 @@ int main() {
         set_cursor_pos(cinfo, x, y);
         set_foreground_color(cinfo, z%8);
         WriteConsoleA(cinfo->outHandle, PSTR, PSTR_len, NULL, NULL);
-        // snprintf(strbuff, STR_BUFFLEN, "\x1b[%d;%dH\x1b[38;5;%dm%s", y, x, COLOR_MAP[z%8], PSTR);
-        // WriteConsoleA(cinfo->outHandle, strbuff, strlen(strbuff), NULL, NULL);
         
-        Sleep(200);
+        Sleep(150);
 
         x += x_vel;
         y += y_vel;

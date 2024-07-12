@@ -5,13 +5,13 @@
 #define __DCONSOLE__
 
 typedef enum console_error {
-    CONSOLE_SUCCESS             = 0,
-    CONSOLE_ERR_NULL_CINFO      = 1,
-    CONSOLE_ERR_WINDOW_EVENT    = 2,
-    CONSOLE_ERR_FOCUS_EVENT     = 4,
-    CONSOLE_ERR_KEY_EVENT       = 8,
-    CONSOLE_ERR_OTHER_EVENT     = 16,
-    CONSOLE_ERR_GENERIC         = 32,
+    CONSOLE_SUCCESS             = 0x00,
+    CONSOLE_ERR_NULL_CINFO      = 0x01,
+    CONSOLE_ERR_WINDOW_EVENT    = 0x02,
+    CONSOLE_ERR_FOCUS_EVENT     = 0x04,
+    CONSOLE_ERR_KEY_EVENT       = 0x08,
+    CONSOLE_ERR_OTHER_EVENT     = 0x10,
+    CONSOLE_ERR_GENERIC         = 0x20,
 } console_error_t;
 
 typedef enum console_color {
@@ -100,6 +100,11 @@ console_error_t hide_cursor(console_info_t* cinfo);
 /// @param cinfo Console info struct
 /// @return Error code
 console_error_t show_cursor(console_info_t* cinfo);
+
+/// @brief Resets color to default
+/// @param cinfo Console info struct
+/// @return Error code
+console_error_t reset_color(console_info_t* cinfo);
 
 /// @brief Sets the text color
 /// @param cinfo Console info struct

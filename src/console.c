@@ -229,6 +229,19 @@ console_error_t show_cursor(console_info_t* cinfo)
     }
 }
 
+console_error_t reset_color(console_info_t* cinfo)
+{
+    BOOL wconsuccess;
+    wconsuccess = WriteConsoleA(cinfo->outHandle, "\x1b[0m", 5, NULL, NULL);
+
+    if (wconsuccess) {
+        return CONSOLE_SUCCESS;
+    }
+    else {
+        return CONSOLE_ERR_GENERIC;
+    }
+}
+
 console_error_t set_foreground_color(console_info_t* cinfo, console_color_t color)
 {
     const int STR_BUFFLEN = 16;
